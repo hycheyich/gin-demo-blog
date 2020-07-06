@@ -1,13 +1,30 @@
 package models
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/jinzhu/gorm"
+	"time"
+)
 
 type Tag struct {
 	Model
 	Name       string `json:"name"`
-	CreatedBy   string `json:"created_by"`
+	CreatedBy  string `json:"created_by"`
 	ModifiedBy string `json:"modified_by"`
 	State      int    `json:"state"`
+}
+
+// 添加创建时间
+func (tag *Tag) BeforeCreate(scope *gorm.Scope) error {
+
+	scope.SetColumn("CreatedOn", time.Now().Unix())
+	return nil
+}
+// 添加更新时间
+func (tag *Tag) BeforeUpdate(scope *gorm.Scope) error {
+
+	scope.SetColumn("ModifiedOn", time.Now().Unix())
+	return nil
 }
 
 // 获取文章tag
@@ -34,13 +51,14 @@ func ExitTagByName(name string) bool {
 
 func AddTag(name string, state int, CreateBy string) bool {
 	db.Create(&Tag{
-		Name:     name,
-		State:    state,
+		Name:      name,
+		State:     state,
 		CreatedBy: CreateBy,
 	})
 	fmt.Println("新增tag成功")
 	return true
 }
+
 //
 //func (tag *Tag)()  {
 //
