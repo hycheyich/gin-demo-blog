@@ -20,6 +20,7 @@ func (tag *Tag) BeforeCreate(scope *gorm.Scope) error {
 	scope.SetColumn("CreatedOn", time.Now().Unix())
 	return nil
 }
+
 // 添加更新时间
 func (tag *Tag) BeforeUpdate(scope *gorm.Scope) error {
 
@@ -49,6 +50,16 @@ func ExitTagByName(name string) bool {
 	return false
 }
 
+func ExistTagByID(id int) bool {
+	var tag Tag
+	db.Select("id").Where("id = ?", id).First(&tag)
+	if tag.ID > 0 {
+		return true
+	}
+	return false
+}
+
+//新增标签
 func AddTag(name string, state int, CreateBy string) bool {
 	db.Create(&Tag{
 		Name:      name,
@@ -59,7 +70,8 @@ func AddTag(name string, state int, CreateBy string) bool {
 	return true
 }
 
-//
-//func (tag *Tag)()  {
-//
-//}
+func EditTag(id int, data interface{}) bool {
+	db.Model(&Tag{}).Where("id = ?", id).Updates(data)
+	fmt.Println("修改tag成功")
+	return true
+}
