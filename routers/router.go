@@ -18,11 +18,12 @@ func InitRouter() *gin.Engine {
 
 	apiv1 := r.Group("/api/v1")
 	{
+		// 标签
 		apiv1.GET("/tags", v1.GetTag)
 		apiv1.POST("/tags", v1.AddTag)
 		apiv1.PUT("/tags", v1.EditTag)
 		apiv1.DELETE("/tags", v1.DelTag)
-
+		//文章
 		apiv1.GET("/articles", v1.GetArticles)
 		apiv1.GET("/articles/:id", v1.GetArticle)
 		apiv1.POST("/articles", v1.AddArticle)
