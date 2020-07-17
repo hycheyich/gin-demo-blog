@@ -70,6 +70,7 @@ func AddTag(name string, state int, CreateBy string) bool {
 	return true
 }
 
+// 编辑标签
 func EditTag(id int, data interface{}) bool {
 	db.Model(&Tag{}).Where("id = ?", id).Updates(data)
 	fmt.Println("修改tag成功")
